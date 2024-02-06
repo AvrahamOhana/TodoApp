@@ -1,8 +1,13 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import NewTodoForm from "./components/NewTodoForm";
 import TodosList from "./components/TodosList";
-import { useEffect } from "react";
+import { Box, Container, Typography, Paper } from "@mui/material";
+import { styled } from '@mui/system';
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(3),
+}));
 
 function App() {
   
@@ -11,7 +16,6 @@ function App() {
     if (localValue == null ) return []
     return JSON.parse(localValue)
   });
-
 
   useEffect(() => {
     localStorage.setItem("ITEMS", JSON.stringify(todos));
@@ -34,26 +38,30 @@ function App() {
         }
         return todo
       })
-
     })
   }
 
-
-function deleteTodo(id) {
-  setTodos(currentTodos => {
-    return currentTodos.filter(todo => todo.id !== id)
+  function deleteTodo(id) {
+    setTodos(currentTodos => {
+      return currentTodos.filter(todo => todo.id !== id)
     })
   }
-
-
 
   return (
-    <div>
-      <h1>Todo List</h1>
-      <NewTodoForm addTodo={addTodo} />
-      <h2>Tasks</h2>
-      <TodosList todos={todos}  toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
-    </div>
+    <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh"  m={0} p={0}>
+      <Container maxWidth="sm">
+        <StyledPaper elevation={6} borderRadius={16}>
+          <Box display="flex" flexDirection="column" alignItems="center" >
+            <Typography variant="h3" component="h1" sx={{ mb: 2 }}>
+              Todo List
+            </Typography>
+            <NewTodoForm addTodo={addTodo} />
+            <Typography variant="h4" component="h2" sx={{ mb: 2 }}>Tasks</Typography>
+            <TodosList todos={todos}  toggleTodo={toggleTodo} deleteTodo={deleteTodo}/>
+          </Box>
+        </StyledPaper>
+      </Container>
+    </Box>
   );
 }
 
